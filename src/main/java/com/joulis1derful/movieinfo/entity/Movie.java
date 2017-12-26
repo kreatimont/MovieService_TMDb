@@ -1,11 +1,12 @@
 package com.joulis1derful.movieinfo.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "Movie")
-public class Movie {
+public class Movie implements Serializable {
     @Id
     private int id;
 

@@ -16,19 +16,16 @@ public class MovieController {
     private MovieService service;
 
     @RequestMapping(value = "/{name}", method = RequestMethod.GET)
-    public List<Movie> getAllReminders(@PathVariable("name") String movieName) {
+    public List<Movie> getAllMovies(@PathVariable("name") String movieName) {
          return service.getAll(movieName);
     }
-    //получить список фильмов по имени (/movie/{name})
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     public Movie getReminder(@PathVariable("id") int movieId) {
         return service.getByID(movieId);
     }
-    //получить по айдишнику фильм (/movie/id/{id})
 
     @RequestMapping(value = "/del/{id}")
-
     public void delete(@PathVariable int id) {
         service.remove(id);
     }

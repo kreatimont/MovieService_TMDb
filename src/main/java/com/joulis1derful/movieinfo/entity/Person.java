@@ -1,13 +1,12 @@
 package com.joulis1derful.movieinfo.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "People")
-public class Person {
+public class Person implements Serializable {
     @Column
     private boolean adult;
 
@@ -30,24 +29,26 @@ public class Person {
     private int id;
 
     @Column(name = "imdb_id")
-    private String imdbId;
+    private String imdb_id;
 
     @Column
     private String name;
 
     @Column(name = "place_of_birth")
-    private String placeOfBirth;
+    private String place_of_birth;
 
     @Column
     private double popularity;
 
     @Column(name = "profile_path")
-    private String profilePath;
+    private String profile_path;
+
+
 
     public Person() {
     }
 
-    public Person(boolean adult, String biography, String birthday, String deathday, int gender, String homepage, int id, String imdbId, String name, String placeOfBirth, double popularity, String profilePath) {
+    public Person(boolean adult, String biography, String birthday, String deathday, int gender, String homepage, int id, String imdb_id, String name, String place_of_birth, double popularity, String profile_path) {
         this.adult = adult;
         this.biography = biography;
         this.birthday = birthday;
@@ -55,11 +56,17 @@ public class Person {
         this.gender = gender;
         this.homepage = homepage;
         this.id = id;
-        this.imdbId = imdbId;
+        this.imdb_id = imdb_id;
         this.name = name;
-        this.placeOfBirth = placeOfBirth;
+        this.place_of_birth = place_of_birth;
         this.popularity = popularity;
-        this.profilePath = profilePath;
+        this.profile_path = profile_path;
+    }
+
+    public Person(int id, String name, List<Movie> movies) {
+        this.id = id;
+        this.name = name;
+        //this.movies.addAll(movies);
     }
 
     public boolean isAdult() {
@@ -90,23 +97,23 @@ public class Person {
         return id;
     }
 
-    public String getImdbId() {
-        return imdbId;
+    public String getImdb_id() {
+        return imdb_id;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getPlaceOfBirth() {
-        return placeOfBirth;
+    public String getPlace_of_birth() {
+        return place_of_birth;
     }
 
     public double getPopularity() {
         return popularity;
     }
 
-    public String getProfilePath() {
-        return profilePath;
+    public String getProfile_path() {
+        return profile_path;
     }
 }

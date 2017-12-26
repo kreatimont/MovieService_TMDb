@@ -7,6 +7,6 @@ import java.util.List;
 public interface PeopleService {
     List<Person> getAll(String searchName);
     Person getByID(int id);
-    Person save(Person remind);
+    Person save(Person person);
     void remove(int id);
 }

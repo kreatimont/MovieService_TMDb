@@ -3,6 +3,7 @@ package com.joulis1derful.movieinfo.util;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.joulis1derful.movieinfo.entity.Movie;
+import com.joulis1derful.movieinfo.entity.Person;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -12,6 +13,7 @@ import java.util.List;
 
 public class ParseMovieInfo {
     private static List<Movie> movies;
+    private static List<Person> people;
 
     public static Movie getMovieById(int movieId) {
         final String URL_TO_PARSE_DETAILS = "https://api.themoviedb.org/3/movie/"+movieId+"?api_key=52cc54558595d4caee5f1c68a7e7396f";
@@ -89,5 +91,86 @@ public class ParseMovieInfo {
             e.printStackTrace();
         }
         return movies;
+    }
+
+    public static Person getPersonById(int personId) {
+        final String URL_TO_PARSE_DETAILS = "https://api.themoviedb.org/3/person/"+personId+"?api_key=52cc54558595d4caee5f1c68a7e7396f";
+        Person person = null;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            URL url = new URL(URL_TO_PARSE_DETAILS);
+            JsonNode root = mapper.readTree(url);
+            boolean adult = root.path("adult").asBoolean();
+            String biography = root.path("biography").asText();
+            String birthday = root.path("birthday").asText();
+            int gender = root.path("gender").asInt();
+            String deathday = root.path("deathday").asText();
+            String homepage = root.path("homepage").asText();
+            int id = root.path("id").asInt();
+            String imdbId = root.path("imdb_id").asText();
+            String name = root.path("name").asText();
+            String place_of_birth = root.path("place_of_birth").asText();
+            double popularity = root.path("popularity").asDouble();
+            String profile_path = root.path("profile_path").asText();
+            person = new Person(adult, biography, birthday, deathday, gender, homepage, id, imdbId, name,
+                    place_of_birth, popularity, profile_path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return person;
+    }
+
+    public static List<Person> getPeople(String searchName) {
+        final String URL_TO_PARSE_MOVIES = "https://api.themoviedb.org/3/search/person?api_key=52cc54558595d4caee5f1c68a7e7396f&query=" + searchName;
+        people = new ArrayList<>();
+        movies = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        URL url = null;
+        try {
+            url = new URL(URL_TO_PARSE_MOVIES);
+            JsonNode root = mapper.readTree(url);
+            JsonNode results = root.path("results");
+            for(JsonNode result : results) {
+                int id = result.path("id").asInt();
+                String name = result.path("name").asText();
+                boolean adult = root.path("adult").asBoolean();
+                String backdropPath = root.path("backdrop_path").asText();
+                int budget = root.path("budget").asInt();
+                String title = root.path("title").asText();
+                JsonNode genresNode = root.path("genres");
+                StringBuffer buffer = new StringBuffer();
+                for(JsonNode genre : genresNode) {
+                    JsonNode genreName = genre.path("name");
+                    buffer.append(genreName.asText() + " ");
+                }
+                String genres = buffer.toString();
+                String homepage = root.path("homepage").asText();
+                int movieId = root.path("id").asInt();
+                String imdbId = root.path("imdb_id").asText();
+                String originalLanguage = root.path("original_language").asText();
+                String originalTitle = root.path("original_title").asText();
+                String overview = root.path("overview").asText();
+                double popularity = root.path("popularity").asDouble();
+                String posterPath = root.path("poster_path").asText();
+                String releaseDate = root.path("release_date").asText();
+                int revenue = root.path("revenue").asInt();
+                int runtime = root.path("runtime").asInt();
+                String status = root.path("status").asText();
+                String tagline = root.path("tagline").asText();
+                boolean video = root.path("video").asBoolean();
+                double voteAverage = root.path("vote_average").asDouble();
+                int voteCount = root.path("vote_count").asInt();
+                Movie movie = new Movie(movieId, title, adult, backdropPath,
+                        budget, genres, homepage, imdbId, originalLanguage, originalTitle,
+                        overview, popularity, posterPath, releaseDate, revenue, runtime,
+                        status, tagline, video, voteAverage, voteCount);
+                movies.add(movie);
+                Person person = new Person(id, name, movies);
+                people.add(person);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return people;
     }
 }
